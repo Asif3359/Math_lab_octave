@@ -1,35 +1,44 @@
 clc;
 
-f = @(x) x^2 - 2^x - 3;
-a = -4;
-b = 4;
+f = @(x) exp(log(x)) - exp(x) + sin(x);
+a = -0.5;
+b = 0.4;
+epsilon = 1e-10;
+max_iter = 20;
 
-epsilon = 0.0001;
-iteration = 0;
-fprintf('It\t\tFc\t\tRoot \n');
-while (b - a) >= epsilon
-    fa = f(a);
-    fb = f(b);
-    c = a - (fa * (b - a) / (fb - fa));
+fprintf('\tIteration \t Approximate Root \n');
+
+if f(a) * f(b) >= 0 || a >= b
+    disp('Invalid initial interval [a, b]. The method may not converge.');
+end
+
+roots = zeros(1, max_iter); % Initialize an array to store roots
+
+for i = 1:max_iter
+    c = (a * f(b) - b * f(a)) / (f(b) - f(a));
+    fprintf('\t %d \t\t %f\n', i, c);
 
     fc = f(c);
 
     if abs(fc) < epsilon
+        roots(i) = c;  % Store the root
         break;
     end
 
-    if sign(fc) == sign(fa)
-        a = c;
-    else
+    if f(a) * fc < 0
         b = c;
+    elseif f(b) * fc < 0
+        a = c;
     end
 
-    iteration = iteration + 1;
-    fprintf(' %d:  \t  %.06f  \t %f\n', iteration, fc, (a + b) / 2);
+    roots(i) = c;  % Store the root at each iteration
 end
 
-root = (a + b) / 2;
+fprintf('Approximate root: %f\n', roots(i));
 
-fprintf('Approximate root: %f\n', root);
-fprintf('Number of iterations: %d\n', iteration);
+
+
+
+
+
 

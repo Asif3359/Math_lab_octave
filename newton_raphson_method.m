@@ -1,11 +1,11 @@
 % formula for newton-raphson method, X(n-1)=Xn-(f(Xn))/(f'(Xn)
 clc;
 %ingredients:
-f = @(x) 2^x - 5*x + 2;
-df = @(x) log(2)*(2^x) - 5;
-e = 10^-14;
-x0 = 0;
-n = 10;
+f = @(x) exp(log(x))- exp(x)+ sin(x);
+df = @(x) (exp(log(x))*(1/x)) -exp(x)+cos(x);
+e = 10^-4;
+x0 = 0.8;
+n = 100;
 
 %Processing:
 if df(x0)~=0
